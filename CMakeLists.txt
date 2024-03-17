@@ -8,4 +8,4 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 message("Building with CMake version: ${CMAKE_VERSION}")
 
-add_executable(add huino.cpp)
+add_executable(add heitrino.cpp)
