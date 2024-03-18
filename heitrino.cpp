@@ -53,6 +53,7 @@ void find_next_generation(int **pitch, int height, int width) {
     for (int i = 0; i < width; ++i) {
         next_pitch[i] = new int[width];
     }
+    fill_pitch(next_pitch, height, width);
 
     while (true)
     {
@@ -64,7 +65,7 @@ void find_next_generation(int **pitch, int height, int width) {
                 live_cells_count += pitch[i][j];
                 std::cout << live_cells;
 
-                if (live_cells == 3) next_pitch[i][j] = 1;
+                if (live_cells == 3 || live_cells == 2 && pitch[i][j] == 1) next_pitch[i][j] = 1;
                 if (live_cells < 2 || live_cells > 3) next_pitch[i][j] = 0;
             }
         }
@@ -73,7 +74,8 @@ void find_next_generation(int **pitch, int height, int width) {
         show_pitch(pitch, height, width);
         std::cout << live_cells_count << std::endl;
         if (next_pitch == pitch || live_cells_count == 0) break;
-        pitch = next_pitch;
+        
+        pitch = next_pitch;     
     }
 }
 
