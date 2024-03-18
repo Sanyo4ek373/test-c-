@@ -17,6 +17,7 @@ void show_pitch(int **pitch, int height, int width){
         }
         std::cout << std::endl; 
     }
+    std::cout << std::endl;
 }
 
 void setup_pitch(int **pitch, std::string cells) {
@@ -28,21 +29,19 @@ void setup_pitch(int **pitch, std::string cells) {
 
 int find_live_cells(int **pitch, int column, int line) {
     int live_cells = 0;
+    
+    int c = 0;
+    int l = 0;
+    int m = 3;
+    int n = 3;
 
-    int i = 0;
-    int j = 0;
+    if (column == 0) c = 1;
+    if (line == 0) l = 1;
+    if (column == 9) m = 2;
+    if (line == 9) n = 2;
 
-    int m = 0;
-    int n = 0;
-
-    if (column == 0) i += 1;
-    if (column == 9) m += 1;
-
-    if (line == 0) j += 1;
-    if (line == 9) n += 1;
-
-    for (i; i < 3 - m; ++i) {
-        for (j; j < 3 - n; ++j) {
+    for (int i = c; i < m; ++i) {
+        for (int j = l; j < n; ++j) {
             live_cells += pitch[column - 1 + i][line - 1 + j];
         }
     }
@@ -54,7 +53,6 @@ void find_next_generation(int **pitch, int height, int width) {
     for (int i = 0; i < width; ++i) {
         next_pitch[i] = new int[width];
     }
-    next_pitch = pitch;
 
     while (true)
     {
@@ -64,17 +62,18 @@ void find_next_generation(int **pitch, int height, int width) {
             for (int j = 0; j < width; ++j) {
                 int live_cells = find_live_cells(pitch, i, j);
                 live_cells_count += pitch[i][j];
+                std::cout << live_cells;
 
                 if (live_cells == 3) next_pitch[i][j] = 1;
                 if (live_cells < 2 || live_cells > 3) next_pitch[i][j] = 0;
             }
         }
+        std::cout << std::endl;
+
         show_pitch(pitch, height, width);
-        
-        if (next_pitch == pitch || live_cells_count == 0) {
-            pitch = next_pitch;
-            break;
-        }
+        std::cout << live_cells_count << std::endl;
+        if (next_pitch == pitch || live_cells_count == 0) break;
+        pitch = next_pitch;
     }
 }
 
@@ -95,6 +94,5 @@ int main() {
     fill_pitch(pitch, HEIGHT, WIDTH);
     setup_pitch(pitch, cells);
     find_next_generation(pitch, HEIGHT, WIDTH);
-
     return 0;
 }
