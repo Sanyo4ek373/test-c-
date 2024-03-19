@@ -50,13 +50,15 @@ int find_live_cells(int **pitch, int column, int line) {
 
 void find_next_generation(int **pitch, int height, int width) {
     int **next_pitch = new int * [height];
+    
     for (int i = 0; i < width; ++i) {
         next_pitch[i] = new int[width];
     }
     fill_pitch(next_pitch, height, width);
 
-    while (true)
-    {
+    int loops = 0;
+
+    while (true) {
         int live_cells_count = 0;
 
         for (int i = 0; i < height; ++i) {
@@ -66,16 +68,21 @@ void find_next_generation(int **pitch, int height, int width) {
                 std::cout << live_cells;
 
                 if (live_cells == 3 || live_cells == 2 && pitch[i][j] == 1) next_pitch[i][j] = 1;
-                if (live_cells < 2 || live_cells > 3) next_pitch[i][j] = 0;
+                else next_pitch[i][j] = 0;
             }
         }
         std::cout << std::endl;
 
         show_pitch(pitch, height, width);
         std::cout << live_cells_count << std::endl;
-        if (next_pitch == pitch || live_cells_count == 0) break;
+        if (next_pitch == pitch || live_cells_count == 0 || loops >= 8) break;
         
-        pitch = next_pitch;     
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                pitch[i][j] = next_pitch[i][j];
+            }
+        }
+        loops += 1;          
     }
 }
 
